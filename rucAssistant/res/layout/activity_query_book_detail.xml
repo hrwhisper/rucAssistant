@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fadingEdge="vertical"
+    android:scrollbars="vertical" 
+    android:background="@drawable/app_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" 
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        >
+
+        <TableLayout
+            android:id="@+id/library_detail_tableLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:shrinkColumns="1"
+            android:stretchColumns="0" >
+        </TableLayout>
+
+        <TableLayout
+            android:id="@+id/library_detail_tableLayout_place"
+            android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:stretchColumns="*" >
+        </TableLayout>
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">人大助手</string>
+    <string name="lib_name">人大图书馆</string>
+    <string name="label_score">成绩单</string>
+    <string name="label_myCourse">课程表</string>
+    <string name="label_classroom">空教室</string>
+    <string name="queryBook">图书检索</string>
+    <string name="queryBorrowBook">借阅记录</string>
+    <string name="queryClassroom">空教室</string>
+    <string name="empty"></string>
+    <string name="monday">周一</string>
+    <string name="tuesday">周二</string>
+    <string name="wednesday">周三</string>
+    <string name="thursday">周四</string>
+    <string name="friday">周五</string>
+    <string name="saturday">周六</string>
+    <string name="sunday">周日</string>
+    <string name="login">登录</string>
+     <string name="query">查询</string>
+    <string name="autoLogin">自动登录</string>
+    <string name="rememberPassword">记住密码</string>
+    <string name="userName">用户名</string>
+    <string name="password">密码</string>
+
+</resources>
