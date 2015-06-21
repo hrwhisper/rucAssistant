@@ -38,12 +38,12 @@ public class LoginLibrary extends Thread {
 	public boolean getOK(){
 		return ok;
 	}
-
+	//构造函数
 	public LoginLibrary(String userName, String password) {
 		this.userName = userName;
 		this.password = password;
 	}
-
+	//获取登录的url（动态的，每次都不一样）
 	private String getPostUrl() throws ClientProtocolException, IOException {
 		this.httpget = new HttpGet(url);
 		HttpResponse response = httpclient.execute(httpget);
@@ -59,7 +59,7 @@ public class LoginLibrary extends Thread {
 		Element form = doc.getElementsByClass("renew_materials").last();
 		return "http://202.112.118.30/" + form.attr("action");
 	}
-
+	//登陆过程
 	private boolean login(String postUrl) throws ClientProtocolException,
 			IOException {
 		List<NameValuePair> param = new ArrayList<NameValuePair>();
@@ -76,14 +76,16 @@ public class LoginLibrary extends Thread {
 			shtml.append(line);
 		}
 		String html = new String(shtml);
-		int index = html.indexOf("登录无效");
+		int index = html.indexOf("登录无效"); //判断是否登录有效
 		Document doc = Jsoup.parse(html);
+		//根据itemlisting2的css加入书籍
 		Elements tableRows = doc.getElementsByClass("itemlisting2");
 		for (int i = 0; i < tableRows.size();i++){
 			Element row = tableRows.get(i);
 			if(row.text().equals("")) continue;
 			books.add(row.text());
 		}
+		//根据itemlisting的css加入书籍
 		tableRows = doc.getElementsByClass("itemlisting");
 		for (int i = 0; i < tableRows.size();i++){
 			Element row = tableRows.get(i);
@@ -105,9 +107,9 @@ public class LoginLibrary extends Thread {
 			this.ok = this.login(postUrl); //登陆
 			Message msg = new Message();
 			if(this.ok) msg.what = 1; 	//登陆成功
-			else msg.what = 0;		//登陆出错
+			else msg.what = 0;			//登陆出错
 			Bundle data = new Bundle();
-			data.putSerializable("borrowBooksList", this.books);
+			data.putSerializable("borrowBooksList", this.books);	
 			msg.setData(data);
 			if(LoginLibraryActivity.myHandler!=null){
 				LoginLibraryActivity.myHandler.sendMessage(msg);
@@ -115,7 +117,7 @@ public class LoginLibrary extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 			Message msg = new Message();
-			msg.what = 0;
+			msg.what = 0;				//登陆出错
 			LoginActivity.myHandler.sendMessage(msg);
 		} finally {
 			if (this.httpget != null)

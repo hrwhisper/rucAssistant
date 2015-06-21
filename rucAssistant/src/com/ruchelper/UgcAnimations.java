@@ -49,7 +49,7 @@ public class UgcAnimations {
 		scale.setDuration(durationMillis);
 		return scale;
 	}
-
+	
 	public static Animation getTranslateAnimation(float fromXDelta,
 			float toXDelta, float fromYDelta, float toYDelta,
 			long durationMillis) {
@@ -59,7 +59,7 @@ public class UgcAnimations {
 		translate.setFillAfter(true);
 		return translate;
 	}
-
+	//设置开启的动画
 	public static void startOpenAnimation(RelativeLayout relativeLayout,
 		ImageView menu, long durationMillis) {
 		relativeLayout.setVisibility(View.VISIBLE);
@@ -83,7 +83,7 @@ public class UgcAnimations {
 			imageView.startAnimation(set);
 		}
 	}
-
+	//设置关闭的动画
 	public static void startCloseAnimation(final RelativeLayout relativeLayout,
 			 ImageView menu, long durationMillis) {
 		menu.startAnimation(getRotateAnimation(90, 0, durationMillis));

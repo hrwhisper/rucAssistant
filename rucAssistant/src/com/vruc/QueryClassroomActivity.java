@@ -23,50 +23,44 @@ public class QueryClassroomActivity extends Activity {
 	static Handler myHandler;
 	private ProgressDialog pd;
 
-	private static final int[] week = { 1, 2, 3, 4, 5, 6, 7 };
+	private static final int[] week = { 1, 2, 3, 4, 5, 6, 7 };// 星期
 	private static final String[] building = { "公共教学一楼", "公共教学二楼", "公共教学三楼",
-			"公共教学四楼", "明德主楼", "明德商学楼", "明德国际楼", "明德新闻楼", "明德法学楼", "求是楼" };
+			"公共教学四楼", "明德主楼", "明德商学楼", "明德国际楼", "明德新闻楼", "明德法学楼", "求是楼" };// 教学楼
 	private static final int[] startTime = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-			12, 13, 14, 15 };
+			12, 13, 14, 15 };// 开始节数
 	private static final int[] endTime = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-			12, 13, 14, 15 };
-	private String[] week_string = new String[week.length];
+			12, 13, 14, 15 };// 结束的节数
+	private String[] week_string = { "星期一", "星期二", "星期三", "星期四", "星期五", "星期六",
+			"星期日" };
 	private String[] startTime_string = new String[startTime.length];
 	private String[] endTime_string = new String[endTime.length];
 	private TextView textView_week; // 教学周
 	private TextView textView_building; // 教学楼
 	private TextView textView_startTime; // 起始时间
 	private TextView textView_endTime; // 结束时间
-	private Spinner spinner_week;
-	private Spinner spinner_building;
-	private Spinner spinner_startTime;
-	private Spinner spinner_endTime;
-	private ArrayAdapter<String> adapter_week;
-	private ArrayAdapter<String> adapter_building;
-	private ArrayAdapter<String> adapter_startTime;
-	private ArrayAdapter<String> adapter_endTime;
+	private Spinner spinner_week , spinner_building,spinner_startTime,spinner_endTime;//相应的Spinner
+	private ArrayAdapter<String> adapter_week,adapter_building,adapter_startTime,adapter_endTime;//相应的ArrayAdapter
 
-	int post_week = 0;
-	String post_building = null;
-	int post_startTime = 0;
-	int post_endTime = 0;
+	private int post_week = 0; // 选定的星期几
+	private String post_building = null;// 选定的教学楼
+	private int post_startTime = 0; // 选定的开始时间
+	private int post_endTime = 0; // 选定的结束时间
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		week_string[0] = "星期一";
-		week_string[1] = "星期二";
-		week_string[2] = "星期三";
-		week_string[3] = "星期四";
-		week_string[4] = "星期五";
-		week_string[5] = "星期六";
-		week_string[6] = "星期日";
+		requestWindowFeature(Window.FEATURE_NO_TITLE);// 设置无标题模式
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_query_classroom);
+		init();
+		setListener();
+	}
+
+	// 获取相应的组件并且初始化
+	private void init() {
 		for (int index = 0; index < startTime.length; index++) {
 			startTime_string[index] = "第" + startTime[index] + "节";
 			endTime_string[index] = "第" + endTime[index] + "节";
 		}
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_query_classroom);
 		linearLayout = (LinearLayout) findViewById(R.id.classroom_linearLayout);
 		textView_week = (TextView) findViewById(R.id.spinnerText1);
 		spinner_week = (Spinner) findViewById(R.id.spinner_week);
@@ -104,7 +98,10 @@ public class QueryClassroomActivity extends Activity {
 		spinner_building.setVisibility(View.VISIBLE);
 		spinner_startTime.setVisibility(View.VISIBLE);
 		spinner_endTime.setVisibility(View.VISIBLE);
+	}
 
+	// 设置时间监听
+	private void setListener() {
 		// 添加点击侦听器
 		spinner_week.setOnItemSelectedListener(new OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
@@ -118,7 +115,7 @@ public class QueryClassroomActivity extends Activity {
 						Toast.LENGTH_SHORT).show();
 			}
 		});
-
+		
 		spinner_building
 				.setOnItemSelectedListener(new OnItemSelectedListener() {
 					public void onItemSelected(AdapterView<?> arg0, View arg1,
@@ -172,7 +169,6 @@ public class QueryClassroomActivity extends Activity {
 					Toast.LENGTH_SHORT).show();
 			return;
 		}
-
 		QueryClassroom mytask = new QueryClassroom(post_week, post_building,
 				post_startTime, post_endTime);
 		pd = ProgressDialog.show(QueryClassroomActivity.this, "空教室查询", "正在查询…");
@@ -183,19 +179,20 @@ public class QueryClassroomActivity extends Activity {
 			public void handleMessage(Message msg) {
 				Log.e("Handler", "start");
 				pd.dismiss();
-				String classrooms = (String) msg.obj;
-				addTextView(classrooms);
+				String classrooms = (String) msg.obj; //获取空教室信息
+				addTextView(classrooms);	//显示空教室
 			}
 		};
 	}
-
+	
+	//添加textView用于显示空教室结果
 	public void addTextView(String temp) {
-		linearLayout.removeAllViews();
+		linearLayout.removeAllViews();	//移除之前的textView，防止多次查询多个textView
 		TextView textView = new TextView(this);
 		String[] classrooms = temp.split("\n");
-		String res="";
-		for(String classroom : classrooms){
-			res = res + classroom+"   ";
+		String res = "";
+		for (String classroom : classrooms) {
+			res = res + classroom + "   ";
 		}
 		textView.setText(res);
 		textView.setPadding(20, 15, 20, 15);

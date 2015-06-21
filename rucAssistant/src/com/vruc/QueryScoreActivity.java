@@ -39,7 +39,7 @@ public class QueryScoreActivity extends Activity {
 				@Override
 				public void handleMessage(Message msg) {
 					pd.dismiss();
-					scores = (ArrayList<String[]>) msg.obj;
+					scores = (ArrayList<String[]>) msg.obj;//获取score列表
 //					for(int i=0;i<scores.size();i++){
 //						for(int j=0;j<scores.get(i).length;j++){
 //							Log.v("test",scores.get(i)[j]);
@@ -56,7 +56,8 @@ public class QueryScoreActivity extends Activity {
 					.show();
 		}
 	}
-
+	
+	//用于显示score
 	class ScoreExpandableListAdaper extends BaseExpandableListAdapter {
 		ArrayList<String[]> scores = null;
 

@@ -60,10 +60,11 @@ public class QueryMyCourse extends Thread{
 			while ((line = br.readLine()) != null) {
 				sbHTML.append(line);
 			}
-			this.myCourse = getMyCourse(new String(sbHTML));
+			this.myCourse = getMyCourse(new String(sbHTML));//获取课程
 			Message msg = new Message();
 			msg.obj = this.myCourse;
-			if(QueryMyCourseAcitivity.myHandler!=null)QueryMyCourseAcitivity.myHandler.sendMessage(msg); // 向Handler发送消息,更新UI
+			if(QueryMyCourseAcitivity.myHandler!=null)
+				QueryMyCourseAcitivity.myHandler.sendMessage(msg); // 向Handler发送消息,更新UI
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -73,7 +74,7 @@ public class QueryMyCourse extends Thread{
 			httpPost.abort();
 		}
 	}
-	
+	//html解析并且获取相应的课程
 	protected ArrayList<Course> getMyCourse(String html) throws IOException{
 		Document doc = Jsoup.parse(html);
 		Elements tableRows = doc.getElementsByTag("tr");

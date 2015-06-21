@@ -28,7 +28,7 @@ public class LoginActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_login);
 		init();
-		if(getRestoreInfo()){
+		if(getRestoreInfo()){	//获取保存的账号密码
 			login(new View(this));
 		}
 	}
@@ -36,9 +36,9 @@ public class LoginActivity extends Activity {
 	
 	@SuppressLint("HandlerLeak")
 	public void login(View v){
-		final String userNameValue = userName.getText().toString();
-		final String passwordValue = password.getText().toString();
-		if(userNameValue.equals("") || passwordValue.equals("")){
+		final String userNameValue = userName.getText().toString();//获取用户名
+		final String passwordValue = password.getText().toString();//获取密码
+		if(userNameValue.equals("") || passwordValue.equals("")){//判断用户名密码是否为空
 			Toast.makeText(getApplicationContext(), "用户名和密码不能为空！", Toast.LENGTH_SHORT)
 			.show();
 			return;
@@ -53,16 +53,15 @@ public class LoginActivity extends Activity {
 				// 定义处理消息的方法
 				@Override
 				public void handleMessage(Message msg) {
-					
-					if(msg.what==1){
+					if(msg.what==1){//登陆成功
 						Intent intent = new Intent(LoginActivity.this,
-								MainActivity.class);
-						if(rememberPassword.isChecked()){
+								MainActivity.class);//跳转主界面
+						if(rememberPassword.isChecked()){ //若有记住密码选项进行记住密码操作
 							writeData(userNameValue,passwordValue);
 						}
 						startActivity(intent);
 						finish();
-					}else{
+					}else{//登录失败
 						Log.e("test","用户名或密码错误");
 						Toast.makeText(getApplicationContext(), "用户名或密码错误", Toast.LENGTH_LONG)
 						.show();
@@ -76,7 +75,7 @@ public class LoginActivity extends Activity {
 					.show();
 		}
 	}
-	
+	//初始化并获取各项组件
 	void init(){
 		this.userName = (EditText) findViewById(R.id.username);
 		this.password = (EditText) findViewById(R.id.password);
@@ -84,6 +83,7 @@ public class LoginActivity extends Activity {
 		this.autoLogin = (CheckBox) findViewById(R.id.autoLogin);
 	}
 	
+	//获取保存的账号密码
 	boolean getRestoreInfo(){
 		SharedPreferences sharedPreferences = getSharedPreferences("vrucLogin",
 				Activity.MODE_PRIVATE);
@@ -91,9 +91,9 @@ public class LoginActivity extends Activity {
 		this.password.setText(sharedPreferences.getString("password", ""));
 		this.rememberPassword.setChecked(sharedPreferences.getBoolean("rememberPassword", false));
 		this.autoLogin.setChecked(sharedPreferences.getBoolean("autoLogin", false));
-		return this.autoLogin.isChecked();
+		return this.autoLogin.isChecked();//返回是否为自动登录
 	}
-	
+	//保存账户密码
 	void writeData(String userNameValue,String passwordValue){
 		SharedPreferences mySharedPreferences = getSharedPreferences("vrucLogin",
 				Activity.MODE_PRIVATE);

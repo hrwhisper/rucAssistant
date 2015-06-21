@@ -31,8 +31,8 @@ public class LoginLibraryActivity extends Activity {
 
 	@SuppressLint("HandlerLeak")
 	public void login(View v) {
-		final String userNameValue = userName.getText().toString();
-		final String passwordValue = password.getText().toString();
+		final String userNameValue = userName.getText().toString();//获取用户名
+		final String passwordValue = password.getText().toString();//获取密码
 		if (userNameValue.equals("") || passwordValue.equals("")) {
 			Toast.makeText(getApplicationContext(), "用户名和密码不能为空！",
 					Toast.LENGTH_SHORT).show();
@@ -40,7 +40,7 @@ public class LoginLibraryActivity extends Activity {
 		}
 		try {
 			final LoginLibrary mytask = new LoginLibrary(userNameValue,
-					passwordValue);
+					passwordValue);//登录
 			pd = ProgressDialog.show(LoginLibraryActivity.this, "查询", "正在进行查询…");
 			mytask.start();
 
@@ -48,21 +48,21 @@ public class LoginLibraryActivity extends Activity {
 				@Override
 				public void handleMessage(Message msg) {
 					pd.dismiss();
-					if (msg.what == 1)
+					if (msg.what == 1)//登陆成功
 					{
 						ArrayList<String> books = msg.getData().getStringArrayList("borrowBooksList");
-						if (books.size() == 0) {
+						if (books.size() == 0) {//没有借阅书籍的情况直接在屏幕上说明
 							Toast.makeText(getApplicationContext(), "您没有借阅任何书籍",
 									Toast.LENGTH_LONG).show();
 						} 
-						else{
+						else{//有借阅书籍的情况跳转到结果页并显示
 							Intent intent = new Intent(LoginLibraryActivity.this,QueryBorrowBookActivity.class);
 							intent.putExtra("borrowBooksList", books);
 							startActivity(intent);
 							finish();
 						}
 					} 
-					else {
+					else {//密码出错情况
 						pd.dismiss();
 						Toast.makeText(getApplicationContext(), "用户名或密码错误",
 								Toast.LENGTH_LONG).show();
@@ -76,6 +76,7 @@ public class LoginLibraryActivity extends Activity {
 		}
 	}
 
+	//初始化，获取相应的组件
 	void init() {
 		setContentView(R.layout.activity_login_library);
 		this.userName = (EditText) findViewById(R.id.lib_username);

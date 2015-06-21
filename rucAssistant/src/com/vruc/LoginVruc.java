@@ -37,7 +37,7 @@ public class LoginVruc extends Thread {
 		this.userName = userName;
 		this.password = password;
 	}
-
+	//先获取csrf_token值，该值用于登陆发送的一个字段
 	public String getToken() throws ClientProtocolException, IOException {
 		this.httpget = new HttpGet(url_token);
 		httpclient.execute(httpget);
@@ -53,7 +53,8 @@ public class LoginVruc extends Thread {
 		}
 		return null;
 	}
-
+	
+	//登录操作
 	public void login(String csrf_token) throws ClientProtocolException,
 			IOException {
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
@@ -67,7 +68,7 @@ public class LoginVruc extends Thread {
 		httpclient.execute(httpPost);
 		httpPost.abort();
 	}
-
+	//登陆后进行重定向
 	public void redirect() throws ClientProtocolException, IOException {
 		this.httpget = new HttpGet(url_redirect);
 		httpclient.execute(httpget);
@@ -78,17 +79,17 @@ public class LoginVruc extends Thread {
 	public void run() {
 		try {
 			//Log.v("test", "startLogin");
-			this.login(getToken());
-			this.redirect();
+			this.login(getToken()); //登陆
+			this.redirect();		//重定向
 			List<Cookie> cookies = ((AbstractHttpClient) httpclient)
 					.getCookieStore().getCookies();
 			
 			Message msg = new Message();
 			msg.what=0;
-			if (!cookies.isEmpty()) {
+			if (!cookies.isEmpty()) {//遍历cookies
 				for (int i = 0; i < cookies.size(); i++) {
 					Cookie cur = cookies.get(i);
-					if(cur.getName().equals("access_token")){
+					if(cur.getName().equals("access_token")){//根据cookies中是否有名为access_token判断是否登录成功
 						msg.what=1;
 						ok=true;
 					}

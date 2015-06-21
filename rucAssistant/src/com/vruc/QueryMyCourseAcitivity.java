@@ -23,14 +23,8 @@ import android.widget.TextView;
 public class QueryMyCourseAcitivity extends Activity {
 	public static Handler myHandler = null;
 	private ProgressDialog pd;
-	private TextView empty;
-	private TextView monColum;
-	private TextView tueColum;
-	private TextView wedColum;
-	private TextView thuColum;
-	private TextView friColum;
-	private TextView satColum;
-	private TextView sunColum;
+	private TextView empty;//第一列为空
+	private TextView monColum,tueColum , wedColum,thuColum,friColum,satColum,sunColum;//周一到周天的列
 	private RelativeLayout course_table_layout; // 课程表body部分布局
 	private int gridWidth; // 格子宽度
 	private int gridHeight; // 格子高度
@@ -67,8 +61,8 @@ public class QueryMyCourseAcitivity extends Activity {
 				public void handleMessage(Message msg) {
 					pd.dismiss();
 					@SuppressWarnings("unchecked")
-					ArrayList<Course> myCourse = (ArrayList<Course>) msg.obj;
-					drawTimetable(myCourse);
+					ArrayList<Course> myCourse = (ArrayList<Course>) msg.obj;//得到课程信息
+					drawTimetable(myCourse);	//绘制课程表
 				}
 			};
 		} catch (Exception e) {
@@ -81,7 +75,7 @@ public class QueryMyCourseAcitivity extends Activity {
 			for (int j = 1; j <= col; j++) {
 				TextView tx = new TextView(QueryMyCourseAcitivity.this);
 				tx.setId((i - 1) * 8 + j);
-				// 除了最后一列，都使用course_text_view_bg背景（最后一列没有右边框）
+				// 使用course_text_view_bg背景
 				tx.setBackgroundResource(R.drawable.course_text_view_bg);
 				// 相对布局参数
 				RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
@@ -150,7 +144,8 @@ public class QueryMyCourseAcitivity extends Activity {
 			course_table_layout.addView(courseInfo);
 		}
 	}
-
+	
+	//获取相应的组件并且初始化
 	void init() {
 		empty = (TextView) this.findViewById(R.id.myCourse_empty);
 		monColum = (TextView) this.findViewById(R.id.myCourse_monday);

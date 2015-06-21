@@ -90,24 +90,23 @@ public class QueryBook extends Thread {
 			nvps.add(new BasicNameValuePair("library", "ALL"));
 			nvps.add(new BasicNameValuePair("sort_by", "TI"));
 			nvps.add(new BasicNameValuePair("relevance", "off"));
-		} else {
-			//翻页
+		} else {//翻页查询或详细信息
 			nvps.add(new BasicNameValuePair("first_hit", this.firstBookNumber
 					+ ""));
 			nvps.add(new BasicNameValuePair("last_hit", this.firstBookNumber
 					+ 19 + ""));
-			if (viewId != -1) {
+			if (viewId != -1) {//详细信息
 				nvps.add(new BasicNameValuePair("form_type", ""));
 				nvps.add(new BasicNameValuePair("VIEW^" + viewId, "详细资料"));
-			} else
+			} else				//翻页查询
 				nvps.add(new BasicNameValuePair("form_type", "JUMP^"
 						+ jumpNumber));
 			this.url_queryBook = "http://202.112.118.30/uhtbin/cgisirsi/" + ps
 					+ "/人大图书馆/" + time + "/9";
 		}
-		for (int i = 0; i < nvps.size(); i++) {
-			Log.d("test", nvps.get(i).getName() + "  " + nvps.get(i).getValue());
-		}
+//		for (int i = 0; i < nvps.size(); i++) {
+//			Log.d("test", nvps.get(i).getName() + "  " + nvps.get(i).getValue());
+//		}
 		HttpPost httpPost = new HttpPost(url_queryBook);
 		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(nvps, "utf-8"));
@@ -116,14 +115,16 @@ public class QueryBook extends Thread {
 					response.getEntity().getContent(), "UTF-8"));
 			String line = "";
 			StringBuffer sbHTML = new StringBuffer();
-			while ((line = br.readLine()) != null) {
+			while ((line = br.readLine()) != null) {//获取HTML
 				sbHTML.append(line);
 			}
-			if (this.viewId == -1) {
+			//非详细页信息
+			if (this.viewId == -1) 
+			{	
 				this.books = getBooks(new String(sbHTML));
 				Message msg = new Message();
 				Bundle data = new Bundle();
-				if (this.totBooks == -1) {
+				if (this.totBooks == -1) {	//书籍总数为-1但可能是单本的情况
 					int index = new String(sbHTML).indexOf("没找到所需文献");
 					Log.d("book","book index"+index);
 					if(index == -1){ //存在这本书
@@ -133,7 +134,7 @@ public class QueryBook extends Thread {
 						this.totBooks = 0;
 					}
 				}
-				
+				//写入相应的数据
 				data.putCharSequence("ps", this.ps);
 				data.putCharSequence("time", this.time);
 				data.putInt("totBooks", this.totBooks);
@@ -141,19 +142,21 @@ public class QueryBook extends Thread {
 				//Log.e("test", this.ps + "  " + this.time);
 
 				msg.setData(data);
-				if (firstQuery){
+				if (firstQuery){//第一次查询
 					if(QueryBookActivity.myHandler!=null){
 						QueryBookActivity.myHandler.sendMessage(msg);
 					}
 				}
 					
-				else{
+				else{		//翻页模式
 					if(QueryBookResultActivity.myHandler!=null){
 						QueryBookResultActivity.myHandler.sendMessage(msg);
 					}
 				}
 					
-			} else {
+			} 
+			else //详细信息
+			{
 				this.detail = getBookDetails(new String(sbHTML));
 				Message msg = new Message();
 				Bundle data = new Bundle();

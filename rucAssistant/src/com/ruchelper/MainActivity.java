@@ -40,10 +40,10 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);//设置不显示标题
 		setContentView(R.layout.activity_main);
-		findViewById();
-		setListener();
+		findViewById();	//获取组件
+		setListener();	//设置时间监听
 	}
 	//查找组件
 	public void findViewById() {
@@ -113,7 +113,7 @@ public class MainActivity extends Activity {
 	
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
-		case KeyEvent.KEYCODE_BACK:
+		case KeyEvent.KEYCODE_BACK://返回键的事件监听
 			if (isShow) {
 				isShow = false;
 				UgcAnimations.startCloseAnimation(guide_button_Layout,
@@ -162,7 +162,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
-		//退出登录
+		//退出登录按钮
 		guide_button_logOut.setOnClickListener(new OnClickListener() {
 
 			@Override

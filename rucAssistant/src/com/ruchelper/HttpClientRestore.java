@@ -26,16 +26,17 @@ public class HttpClientRestore {
                             "Mozilla/5.0(Linux;U;Android 2.2.1;en-us;Nexus One Build.FRG83) "
                                     +"AppleWebKit/553.1(KHTML,like Gecko) Version/4.0 Mobile Safari/533.1");
            
-            /* 从连接池中取连接的超时时间 */
+            //从连接池中取连接的超时时间
             ConnManagerParams.setTimeout(params, 1000);
-            /* 连接超时 */
+            //连接超时
             HttpConnectionParams.setConnectionTimeout(params, 2000);
-            /* 请求超时 */
+            //请求超时
             HttpConnectionParams.setSoTimeout(params, 4000);
             httpclient =new DefaultHttpClient(params);
 		}
 		return httpclient;
 	}
+	//httpclient关闭
 	public static synchronized void colseHttpClient(){
 		if(httpclient!=null)
 			httpclient.getConnectionManager().shutdown(); 

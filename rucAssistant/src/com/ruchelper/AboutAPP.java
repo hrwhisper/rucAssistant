@@ -18,12 +18,12 @@ public class AboutAPP extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);//设置无标题
 		setContentView(R.layout.activity_about_app);
 		ImageView imageView = (ImageView) findViewById(R.id.about_imageView);
 		imageView.setImageBitmap(readBitMap(this,R.drawable.about_app));
 		int id = getIntent().getIntExtra("aboutAPP", -1);
-		if (id == -1) {
+		if (id == -1) {	//判断是否为初始进入界面，是的话设置SPLASH_DISPLAY_LENGHT进行退出
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
@@ -34,6 +34,7 @@ public class AboutAPP extends Activity {
 		}
 	}
 
+	//读取关于的图片
 	public static Bitmap readBitMap(Context context, int resId) {
 		BitmapFactory.Options opt = new BitmapFactory.Options();
 		opt.inPreferredConfig = Bitmap.Config.RGB_565;

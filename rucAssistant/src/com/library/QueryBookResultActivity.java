@@ -45,6 +45,7 @@ public class QueryBookResultActivity extends ListActivity {
 		if (totBooks != 0) addBookContent(books);
 	}
 
+	//下一页的实现
 	@SuppressLint("HandlerLeak")
 	public void nexgPage(View v) {
 		Log.e("test", firstBookNumber + "");
@@ -55,17 +56,17 @@ public class QueryBookResultActivity extends ListActivity {
 			@Override
 			public void handleMessage(Message msg) {
 				// list.removeAllViews();
-				firstBookNumber += 20;
+				firstBookNumber += 20;	//本页第一本书需要进行+20操作
 				Bundle data = msg.getData();
 				@SuppressWarnings("unchecked")
-				ArrayList<Book> books = (ArrayList<Book>) data.getSerializable("bookResult");
-				ps = data.getString("ps");
+				ArrayList<Book> books = (ArrayList<Book>) data.getSerializable("bookResult");//获取书籍信息
+				ps = data.getString("ps");//更新ps和time值
 				time = data.getString("time");
-				addBookContent(books);
+				addBookContent(books);	//显示结果
 			}
 		};
 	}
-
+	//上一页的实现
 	@SuppressLint("HandlerLeak")
 	public void lastPage(View v) {
 		Log.e("test", firstBookNumber + "");
@@ -76,37 +77,39 @@ public class QueryBookResultActivity extends ListActivity {
 			@SuppressLint("HandlerLeak")
 			@Override
 			public void handleMessage(Message msg) {
-				firstBookNumber -= 20;
+				firstBookNumber -= 20;	//本页第一本书需要进行-20操作
 				Bundle data = msg.getData();
 				@SuppressWarnings("unchecked")
-				ArrayList<Book> books = (ArrayList<Book>) data.getSerializable("bookResult");
-				ps = data.getString("ps");
+				ArrayList<Book> books = (ArrayList<Book>) data.getSerializable("bookResult");//获取书籍信息
+				ps = data.getString("ps");	//更新ps和time值
 				time = data.getString("time");
-				addBookContent(books);
+				addBookContent(books);	//显示结果
 			}
 		};
 	}
 
+	//初始化并且获取相应组件
 	public void init() {
 		list = getListView();  
-		button_lastPage = new Button(this);
-		button_nextPage = new Button(this);
+		button_lastPage = new Button(this);	//新建上一页按钮
+		button_nextPage = new Button(this); //新建下一页按钮
 		button_lastPage.setText("<");
 		button_nextPage.setText(">");
 		button_lastPage.setBackgroundResource(R.drawable.pagebutton_guide_bg);
 		button_nextPage.setBackgroundResource(R.drawable.pagebutton_guide_bg);
-		button_lastPage.setOnClickListener(new OnClickListener() {
+		button_lastPage.setOnClickListener(new OnClickListener() {//设置上一页事件监听
 			@Override
 			public void onClick(View v) {
 				lastPage(v);
 			}
 		});
-		button_nextPage.setOnClickListener(new OnClickListener() {
+		button_nextPage.setOnClickListener(new OnClickListener() {//设置下一页事件监听
 			@Override
 			public void onClick(View v) {
 				nexgPage(v);
 			}
 		});
+		//显示效果微调
 		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
 				-2, -2);
 		layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT, -1);
@@ -124,11 +127,11 @@ public class QueryBookResultActivity extends ListActivity {
 		button_nextPage.getLayoutParams().width=(int) px;
 	}
 
+	//将结果添加进Listview并显示结果
 	public void addBookContent(ArrayList<Book> books) {
 		ArrayList<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
 		for (int i = 0; i < books.size(); i++) {
 			Book book = books.get(i);
-
 			String title = firstBookNumber + i + ". " + book.getTitle();
 			String author = "作者 : " + book.getAuthor();
 			String call_number = "索书号 : " + book.getCallNumber();
@@ -148,6 +151,7 @@ public class QueryBookResultActivity extends ListActivity {
 						R.id.book_call_number, R.id.book_holdings_statement });
 		list.setBackgroundResource(R.drawable.app_background);
 		list.setAdapter(adapter);
+		//设置点击后的事件（跳转到详细信息）
 		list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -162,11 +166,12 @@ public class QueryBookResultActivity extends ListActivity {
 				startActivity(intent);
 			}
 		});
+		//根据是否为第一页判断是否显示上一页按钮
 		if (firstBookNumber == 1)
 			button_lastPage.setVisibility(View.INVISIBLE);
 		else
 			button_lastPage.setVisibility(View.VISIBLE);
-
+		//根据是否为最后一页判断是否显示下一页按钮
 		if (firstBookNumber + 20 >= totBooks)
 			button_nextPage.setVisibility(View.INVISIBLE);
 		else

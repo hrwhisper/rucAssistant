@@ -19,11 +19,11 @@ import android.util.Log;
 public class QueryClassroom extends Thread {
 	private String url_classroom = "http://ruchelper.hrwhisper.me/emptyClassroom.php";
 	final HttpClient httpclient = HttpClientRestore.getHttpClient();
-	private int week=0;				
+	private int week=0;				//星期几
 	private String building=null;	//上课地点
-	private int startTime=0;
-	private int endTime=0;
-	private String result="";
+	private int startTime=0;		//课程开始节数
+	private int endTime=0;			//课程结束节数
+	private String result="";		//结果
 	
 	
 	public String getResult() {
@@ -53,7 +53,7 @@ public class QueryClassroom extends Thread {
 			HttpResponse response = httpclient.execute(httpPost);
 			this.result=EntityUtils.toString(response.getEntity());
 			Message msg = new Message();
-			msg.obj = result;
+			msg.obj = result;	//即为服务器返回的结果
 			if(QueryClassroomActivity.myHandler!=null)
 				QueryClassroomActivity.myHandler.sendMessage(msg);
 

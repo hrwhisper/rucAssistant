@@ -42,11 +42,12 @@ public class QueryScore extends Thread {
 			while ((line = br.readLine()) != null) {
 				sbHTML.append(line);
 			}
-			this.scores = getScore(new String(sbHTML));
+			this.scores = getScore(new String(sbHTML));//获取score
 
 			Message msg = new Message();
 			msg.obj = scores;
-			if(QueryScoreActivity.myHandler!=null)QueryScoreActivity.myHandler.sendMessage(msg); // 向Handler发送消息,更新UI
+			if(QueryScoreActivity.myHandler!=null)
+				QueryScoreActivity.myHandler.sendMessage(msg); // 向Handler发送消息,更新UI
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -56,11 +57,12 @@ public class QueryScore extends Thread {
 			httpget.abort();
 		}
 	}
-	//html解析
+	//html解析，从中获取score
 	protected ArrayList<String[]> getScore(String html) throws IOException {
 		Document doc = Jsoup.parse(html);
 		Elements tableRows = doc.getElementsByTag("tr");
 		ArrayList<String[]> scores = new ArrayList<String[]>();
+		//表格的内容
 		final String[] names = new String[]{"课程名称","教师",	"课程类别",	"学分","平时",	"期中",	"期末",	"最终成绩","学分绩点","缺考原因"};
 		for (Element row : tableRows) {
 			Elements tds = row.getElementsByClass("cellContent");

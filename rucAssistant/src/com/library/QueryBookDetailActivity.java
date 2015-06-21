@@ -29,7 +29,7 @@ public class QueryBookDetailActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_query_book_detail);
 		init();
-		if(viewId != -1)
+		if(viewId != -1)	//来源1.从resultActivity点击得来
 		{
 			QueryBook mytask = new QueryBook(viewId,ps, time, firstBookNumber,firstBookNumber + 20);
 			mytask.start();
@@ -41,14 +41,14 @@ public class QueryBookDetailActivity extends Activity{
 				}
 			};
 		}
-		else
+		else			//查询的时候就单本书
 		{
 			ArrayList<String> detail = getIntent().getStringArrayListExtra("bookDetail");
 			addTextView(detail);
 		}
 		
 	}
-	
+	//获取相应的组件
 	private void init(){
 		tableLayout = (TableLayout) findViewById(R.id.library_detail_tableLayout);
 		tableLayoutPlace = (TableLayout) findViewById(R.id.library_detail_tableLayout_place);
@@ -58,6 +58,7 @@ public class QueryBookDetailActivity extends Activity{
 		firstBookNumber = getIntent().getIntExtra("firstBookNumber",-1);
 	}
 	
+	//显示具体的内容及相应的排版
 	public void addTextView(ArrayList<String> detail){
 		for(int i=0;i < 7;i++){
 			TableRow tableRow = new TableRow(this);  

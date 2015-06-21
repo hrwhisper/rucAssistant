@@ -48,11 +48,11 @@ public class QueryBookActivity extends Activity {
 		
 		QueryBook mytask = new QueryBook(this.bookName.getText().toString());
 		pd = ProgressDialog.show(QueryBookActivity.this, "书籍查询", "正在查询…");
-		mytask.start();
+		mytask.start();//开始查询
 		myHandler = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
-				pd.dismiss();
+				pd.dismiss();	
 				Bundle data = msg.getData();
 				int totBooks = data.getInt("totBooks");
 				if (totBooks == -1)
@@ -60,13 +60,13 @@ public class QueryBookActivity extends Activity {
 							Toast.LENGTH_SHORT).show();
 				else {
 					Intent intent = new Intent();
-					if (totBooks == 0) {
+					if (totBooks == 0) {//单本的情况
 						ArrayList<String> detail = (ArrayList<String>) data
 								.getStringArrayList("bookDetail");
 						for (int i = 0; i < detail.size(); i++)
 							Log.d("book", detail.get(i));
 						intent.setClass(QueryBookActivity.this,QueryBookDetailActivity.class);
-					} else {
+					} else {//多本的情况
 						intent.setClass(QueryBookActivity.this,QueryBookResultActivity.class);
 					}
 					intent.putExtras(data);
@@ -74,6 +74,5 @@ public class QueryBookActivity extends Activity {
 				}
 			}
 		};
-
 	}
 }

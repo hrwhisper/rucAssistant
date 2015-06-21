@@ -19,7 +19,7 @@ public class QueryBorrowBookActivity extends ListActivity {
 		//Log.v("book","books"+books.size()+"");
 		for (int i = 0; i < books.size(); i++) {
 			Log.d("book",books.get(i));
-			if ((i & 1) != 0) {
+			if ((i & 1) != 0) {//为两个一组，为奇数的时候恰好为一组
 				Map<String, Object> item = new HashMap<String, Object>();
 				item.put("title", title);
 				item.put("text", books.get(i));
@@ -35,6 +35,6 @@ public class QueryBorrowBookActivity extends ListActivity {
 		setListAdapter(adapter);
 		super.onCreate(savedInstanceState);
 		ListView list = getListView(); 
-		list.setBackgroundResource(R.drawable.app_background);
+		list.setBackgroundResource(R.drawable.app_background);//设置背景
 	}
 }
